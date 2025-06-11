@@ -1,9 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
 export function useFrameworkReady() {
   const [isReady, setIsReady] = useState(false);
-  const isMountedRef = useRef(true);
 
   useEffect(() => {
     // Initialize Supabase and any other framework setup
@@ -14,26 +13,14 @@ export function useFrameworkReady() {
         if (error) {
           console.warn('Supabase connection warning:', error.message);
         }
-        
-        // Only update state if component is still mounted
-        if (isMountedRef.current) {
-          setIsReady(true);
-        }
+        setIsReady(true);
       } catch (error) {
         console.error('Framework initialization error:', error);
-        // Still set ready to prevent blocking, but only if mounted
-        if (isMountedRef.current) {
-          setIsReady(true);
-        }
+        setIsReady(true); // Still set ready to prevent blocking
       }
     };
 
     initializeFramework();
-
-    // Cleanup function to prevent state updates on unmounted component
-    return () => {
-      isMountedRef.current = false;
-    };
   }, []);
 
   return isReady;
