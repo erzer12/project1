@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 export function useFrameworkReady() {
   const [isReady, setIsReady] = useState(false);
@@ -8,10 +8,14 @@ export function useFrameworkReady() {
     // Initialize Supabase and any other framework setup
     const initializeFramework = async () => {
       try {
-        // Test Supabase connection
-        const { data, error } = await supabase.auth.getSession();
-        if (error) {
-          console.warn('Supabase connection warning:', error.message);
+        if (isSupabaseConfigured) {
+          // Test Supabase connection only if properly configured
+          const { data, error } = await supabase.auth.getSession();
+          if (error) {
+            console.warn('Supabase connection warning:', error.message);
+          }
+        } else {
+          console.warn('Supabase is not configured. Please update your .env file with valid credentials.');
         }
         setIsReady(true);
       } catch (error) {
