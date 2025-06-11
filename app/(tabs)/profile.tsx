@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
-import { User, LogIn, LogOut, Mail, AlertCircle } from 'lucide-react-native';
+import { User, LogIn, LogOut, Mail, CircleAlert as AlertCircle } from 'lucide-react-native';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 export default function ProfileScreen() {
